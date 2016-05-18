@@ -219,6 +219,26 @@ describe('metalsmith collections paginate', function () {
         return done(err)
       })
     })
+
+    it('should put pagination data into named index', function (done) {
+      return paginate({
+        'collections.articles': {
+          perPage: 1,
+          template: 'index.jade',
+          key: 'foobar',
+          first: 'articles/index.html',
+          path: 'articles/page/:num/index.html'
+        }
+      })(files, metalsmith, function (err) {
+        var pageOne = files['articles/page/1/index.html']
+        var pageTwo = files['articles/page/2/index.html']
+        expect(pageOne).to.exist
+        expect(pageOne.foobar.num).to.equal(1)
+        expect(pageTwo).to.exist
+        expect(pageTwo.foobar.num).to.equal(2)
+        return done(err)
+      })
+    })
   })
 
   describe('filtering', function () {

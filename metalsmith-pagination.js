@@ -108,6 +108,10 @@ module.exports = function (options) {
             pagination: pagination
           })
 
+          if (pageOptions.key){
+            page[pageOptions.key] = pagination
+          }
+
           // Copy collection metadata onto every page "collection".
           pagination.files.metadata = collection.metadata
 

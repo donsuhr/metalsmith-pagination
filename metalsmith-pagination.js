@@ -9,7 +9,8 @@ var extend = require('xtend')
 var DEFAULTS = {
   perPage: 10,
   noPageOne: false,
-  pageContents: new Buffer('')
+  pageContents: new Buffer(''),
+  key: 'default'
 }
 
 /**
@@ -99,6 +100,11 @@ module.exports = function (options) {
             getPages: createPagesUtility(pages, length)
           }
 
+          if (!metadata.paginationUse) {
+            metadata.paginationUse = {}
+          }
+          metadata.paginationUse[pageOptions.key] = pagination
+
           // Generate the page data.
           var page = extend(pageOptions.pageMetadata, {
             template: pageOptions.template,
@@ -107,10 +113,6 @@ module.exports = function (options) {
             path: interpolate(pageOptions.path, pagination),
             pagination: pagination
           })
-
-          if (pageOptions.key){
-            page[pageOptions.key] = pagination
-          }
 
           // Copy collection metadata onto every page "collection".
           pagination.files.metadata = collection.metadata

@@ -220,7 +220,7 @@ describe('metalsmith collections paginate', function () {
       })
     })
 
-    it('should put pagination data into named index', function (done) {
+    it('should put pagination data to metadata', function (done) {
       return paginate({
         'collections.articles': {
           perPage: 1,
@@ -230,12 +230,7 @@ describe('metalsmith collections paginate', function () {
           path: 'articles/page/:num/index.html'
         }
       })(files, metalsmith, function (err) {
-        var pageOne = files['articles/page/1/index.html']
-        var pageTwo = files['articles/page/2/index.html']
-        expect(pageOne).to.exist
-        expect(pageOne.foobar.num).to.equal(1)
-        expect(pageTwo).to.exist
-        expect(pageTwo.foobar.num).to.equal(2)
+        expect(metalsmith.metadata().paginationUse.foobar.getPages).to.be.function
         return done(err)
       })
     })

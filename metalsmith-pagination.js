@@ -95,6 +95,7 @@ module.exports = function (options) {
             name: name,
             index: length,
             num: length + 1,
+            strTransform: pageOptions.strTransform,
             pages: pages,
             files: [],
             getPages: createPagesUtility(pages, length)
@@ -167,7 +168,10 @@ module.exports = function (options) {
  */
 function interpolate (path, data) {
   return path.replace(/:(\w+)/g, function (match, param) {
-    return data[param]
+    const transform = data.strTransform || function (str) {
+        return str
+      }
+    return transform(data[param])
   })
 }
 
